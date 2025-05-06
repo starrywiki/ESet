@@ -228,40 +228,6 @@ class ESet {
        private:
         Node* current;
         const ESet* curset;
-        // void advance() {
-        //     do {
-        //         if (current->right) {
-        //             current = curset->find_min(current->right);
-        //         } else {
-        //             while (current->parent &&
-        //                    current == current->parent->right) {
-        //                 current = current->parent;
-        //             }
-        //             current = current->parent;
-        //         }
-        //     } while (current && current->isdele);
-        // }
-        // void retreat() {
-        //     do {
-        //         if (current == nullptr) {
-        //             current = curset->find_max(curset->root);
-        //             return;
-        //         }
-        //         Node* min_node = curset->find_min(curset->root);
-        //         if (!curset->comp(min_node->key, current->key) &&
-        //             !curset->comp(current->key, min_node->key))
-        //             return;
-        //         if (current->left) {
-        //             current = curset->find_max(current->left);
-        //         } else {
-        //             while (current->parent &&
-        //                    current == current->parent->left) {
-        //                 current = current->parent;
-        //             }
-        //             current = current->parent;
-        //         }
-        //     } while (current && current->isdele);
-        // }
 
        public:
         iterator(Node* node = nullptr, const ESet* nowset = nullptr)
@@ -386,40 +352,6 @@ class ESet {
         if (v != nullptr) {
             v->parent = u->parent;
         }
-    }
-    void swapNodes(Node*& a, Node*& b) {
-        if (a == b) return; 
-    
-        Node* bParent = b->parent;
-        Node* bLeft = b->left;
-        Node* bRight = b->right;
-        bool isBLeftChild = (bParent && bParent->left == b);
-    
-        if (a->parent == nullptr) {
-            root = b;
-        } else if (a->parent->left == a) {
-            a->parent->left = b;
-        } else {
-            a->parent->right = b;
-        }
-        b->parent = a->parent;
-        b->left = a->left;
-        b->right = a->right;
-        if (a->left) a->left->parent = b;
-        if (a->right) a->right->parent = b;
-        b->is_red = a->is_red;
-    
-        // 将 a 替换为 b
-        a->left = bLeft;
-        a->right = bRight;
-        if (bLeft) bLeft->parent = a;
-        if (bRight) bRight->parent = a;
-        if (isBLeftChild) {
-            bParent->left = a;
-        } else {
-            bParent->right = a;
-        }
-        a->parent = bParent;
     }
     
     size_t erase(const Key& key) {
