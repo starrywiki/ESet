@@ -24,7 +24,6 @@ inline ll read() {
 }
 
 int main() {
-    freopen("/home/starry/ESet/test/test0.in", "r", stdin);
     std::set<ll> s;
     ESet<ll> rbt;
     AVL_SET::ESet<ll> avl;
@@ -32,7 +31,7 @@ int main() {
     int op;
     ll a, b, c;
     int cnt0 = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0;
-    long double s_time0 = 0, s_time1 = 0, s_time2 = 0, s_time3 = 0, s_time4 = 0;
+    double s_time0 = 0, s_time1 = 0, s_time2 = 0, s_time3 = 0, s_time4 = 0;
     double rbt_time0 = 0, rbt_time1 = 0, rbt_time2 = 0, rbt_time3 = 0,
            rbt_time4 = 0;
     double avl_time0 = 0, avl_time1 = 0, avl_time2 = 0, avl_time3 = 0,
@@ -47,15 +46,14 @@ int main() {
         s.insert(a);
     }
     clock_t end = clock();
-    s_time0 = (double)(end - start)/CLOCKS_PER_SEC;
-
+    s_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
     start = clock();
     for (int i = 0; i < cnt0; i++) {
         a = rand() % 3000000;
         rbt.emplace(a);
     }
     end = clock();
-    rbt_time0 = (double)(end - start)/CLOCKS_PER_SEC;
+    rbt_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     start = clock();
     for (int i = 0; i < cnt0; i++) {
@@ -63,7 +61,7 @@ int main() {
         avl.emplace(a);
     }
     end = clock();
-    avl_time0 = (double)(end - start)/CLOCKS_PER_SEC;
+    avl_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     start = clock();
     for (int i = 0; i < cnt0; i++) {
@@ -71,7 +69,7 @@ int main() {
         treap.emplace(a);
     }
     end = clock();
-    treap_time0 = (double)(end - start)/CLOCKS_PER_SEC;
+    treap_time0 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
     
     // test erase
     start = clock();
@@ -81,7 +79,7 @@ int main() {
         s.erase(a);
     }
     end = clock();
-    s_time1 = static_cast<double>(end - start);
+    s_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     start = clock();
     for (int i = 0; i < cnt1; i++) {
@@ -89,7 +87,7 @@ int main() {
         rbt.erase(a);
     }
     end = clock();
-    rbt_time1 = static_cast<double>(end - start);
+    rbt_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     start = clock();
     for (int i = 0; i < cnt1; i++) {
@@ -97,7 +95,7 @@ int main() {
         avl.erase(a);
     }
     end = clock();
-    avl_time1 = static_cast<double>(end - start);
+    avl_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     start = clock();
     for (int i = 0; i < cnt1; i++) {
@@ -105,7 +103,7 @@ int main() {
         treap.erase(a);
     }
     end = clock();
-    treap_time1 = static_cast<double>(end - start);
+    treap_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     // test find
     start = clock();
@@ -115,28 +113,28 @@ int main() {
         s.find(a);
     }
     end = clock();
-    s_time2 = static_cast<double>(end - start);
+    s_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
     start = clock();    
     for (int i = 0; i < cnt2; i++) {
         a = rand() % 3000000;
         rbt.find(a);
     }
     end = clock();
-    rbt_time2 = static_cast<double>(end - start);
+    rbt_time2 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
     start = clock();
     for (int i = 0; i < cnt2; i++) {
         a = rand() % 3000000;
         avl.find(a);
     }
     end = clock();
-    avl_time2 = static_cast<double>(end - start);   
+    avl_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
     start = clock();
     for (int i = 0; i < cnt2; i++) {
         a = rand() % 3000000;
         treap.find(a);
     }
     end = clock();
-    treap_time2 = static_cast<double>(end - start); 
+    treap_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     // test copy
     start = clock();
@@ -166,7 +164,7 @@ int main() {
         FHQ_treap::ESet<ll> treap_copy = treap;  
     }
     end = clock();
-    treap_time3 = static_cast<double>(end - start);
+    treap_time3 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
     // test traversal
     start = clock();
