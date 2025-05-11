@@ -1,16 +1,16 @@
 # Report for ESet's performance tuning
 * by starrywiki in Johnclass project4
-## 数据结构采用：AVL & RBTree & std::set & ?
+## 数据结构采用：AVL & RBTree & std::set & 无旋treap
 ### Experiment process
-使用generatenums.cpp生成test0.cpp实验数据，使用cmp.cpp进行性能测试
-* 总共测试个数：50000
+使用cmp.cpp进行性能测试
+测试数目如下
 * insert：3'000'000
 * erase: 500'000
 * find: 1'000'000
 * = operation: 30
 * iterator related operation: 30
 
-测试结果
+测试结果()
 单位：秒
 |            | std ::set | RBTree | AVL   | 无旋Treap |
 | ---------- | --------- | ------ | ----- | --------- |
@@ -21,7 +21,7 @@
 | iterator   | 0.201     | 0.207  | 0.158 | 0.308     |
 
 ### 调研结果
-由于数据具有随机性，测试结果具有一定误差，但仍可以从中得到普遍规律。
+由于数据具有随机性，测试结果具有一定误差，通过多次测量取平均仍可以从中得到普遍规律。
 1. RBTree 
 * 优势：手写红黑树实现在插入删除以及find操作上表现优异，快于std::set
 * 可能原因：手写红黑树可能在平衡性上做得更好，减少内存分配、避免不必要的操作等。std::set 可能包含额外的功能（如异常处理、调试信息等），这些功能会增加运行时的开销。
