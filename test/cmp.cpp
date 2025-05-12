@@ -3,7 +3,6 @@
 #include <set>
 
 #include "AVL.hpp"
-#include "FHQtreap.hpp"
 #include "src.hpp"
 #define ll long long
 
@@ -27,7 +26,6 @@ int main() {
     std::set<ll> s;
     ESet<ll> rbt;
     AVL_SET::ESet<ll> avl;
-    FHQ_treap::ESet<ll> treap;
     int op;
     ll a, b, c;
     int cnt0 = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0, cnt4 = 0;
@@ -36,8 +34,6 @@ int main() {
            rbt_time4 = 0;
     double avl_time0 = 0, avl_time1 = 0, avl_time2 = 0, avl_time3 = 0,
            avl_time4 = 0;
-    double treap_time0 = 0, treap_time1 = 0, treap_time2 = 0, treap_time3 = 0,
-           treap_time4 = 0;
     // test emplace
     clock_t start = clock();
     cnt0 = 3000000;
@@ -63,14 +59,7 @@ int main() {
     end = clock();
     avl_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
-    start = clock();
-    for (int i = 0; i < cnt0; i++) {
-        a = rand() % 3000000;
-        treap.emplace(a);
-    }
-    end = clock();
-    treap_time0 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
-    
+     
     // test erase
     start = clock();
     cnt1 = 500000;
@@ -97,14 +86,6 @@ int main() {
     end = clock();
     avl_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
-    start = clock();
-    for (int i = 0; i < cnt1; i++) {
-        a = rand() % cnt1*3;
-        treap.erase(a);
-    }
-    end = clock();
-    treap_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
-
     // test find
     start = clock();
     cnt2 = 1000000;
@@ -128,14 +109,7 @@ int main() {
     }
     end = clock();
     avl_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
-    start = clock();
-    for (int i = 0; i < cnt2; i++) {
-        a = rand() % 3000000;
-        treap.find(a);
-    }
-    end = clock();
-    treap_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
-
+    
     // test copy
     start = clock();
     cnt3 = 30;
@@ -159,13 +133,7 @@ int main() {
     end = clock();
     avl_time3 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
     
-    start = clock();
-    for (int i = 0; i < cnt3; i++) {
-        FHQ_treap::ESet<ll> treap_copy = treap;  
-    }
-    end = clock();
-    treap_time3 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
-
+   
     // test traversal
     start = clock();
     cnt4 = 30;
@@ -192,39 +160,27 @@ int main() {
     end = clock();
     avl_time4 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
 
-    start = clock();
-    for (int i = 0; i < cnt4; i++) {
-        for (auto it = treap.begin(); it != treap.end(); ++it) {
-        }
-    }
-    end = clock();
-    treap_time4 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
-
+    
     std::cout << "Operation\tstd::set (us)\tRBT (us)\n";
     std::cout << "Insert totally: \t\t" << cnt0 << " times "
               << (cnt0 ? s_time0 / cnt0 : 0) << "\t\t"
               << (cnt0 ? rbt_time0 / cnt0 : 0) << "\t\t"
-              << (cnt0 ? avl_time0 / cnt0 : 0) << "\t\t"
-              << (cnt0 ? treap_time0 / cnt0 : 0) << "\n";
+              << (cnt0 ? avl_time0 / cnt0 : 0) << "\n";
     std::cout << "Erase totally: \t\t" << cnt1 << " times "
               << (cnt1 ? s_time1 / cnt1 : 0) << "\t\t"
               << (cnt1 ? rbt_time1 / cnt1 : 0) << "\t\t"
-              << (cnt1 ? avl_time1 / cnt1 : 0) << "\t\t"
-              << (cnt1 ? treap_time1 / cnt1 : 0) << "\n";
+              << (cnt1 ? avl_time1 / cnt1 : 0) << "\n";
     std::cout << "Find totally: \t\t" << cnt2 << " times"
               << (cnt2 ? s_time2 / cnt2 : 0) << "\t\t"
               << (cnt2 ? rbt_time2 / cnt2 : 0) << "\t\t"
-              << (cnt2 ? avl_time2 / cnt2 : 0) << "\t\t"
-              << (cnt2 ? treap_time2 / cnt2 : 0) << "\n";
+              << (cnt2 ? avl_time2 / cnt2 : 0) << "\n";
     std::cout << "= operation totally: \t\t" << cnt3 << " times"
               << (cnt3 ? s_time3 / cnt3 : 0) << "\t\t"
               << (cnt3 ? rbt_time3 / cnt3 : 0) << "\t\t"
-              << (cnt3 ? avl_time3 / cnt3 : 0) << "\t\t"
-              << (cnt3 ? treap_time3 / cnt3 : 0) << "\n";
+              << (cnt3 ? avl_time3 / cnt3 : 0) << "\n";
     std::cout << "Traverse totally: \t\t" << cnt4 << " times"
               << (cnt4 ? s_time4 / cnt4 : 0) << "\t\t"
               << (cnt4 ? rbt_time4 / cnt4 : 0) << "\t\t"
-              << (cnt4 ? avl_time4 / cnt4 : 0) << "\t\t"
-              << (cnt4 ? treap_time4 / cnt4 : 0) << "\n";
+              << (cnt4 ? avl_time4 / cnt4 : 0) << "\n";
     return 0;
 }

@@ -1,9 +1,9 @@
-#ifndef ESET_HPP
-#define ESET_HPP
+#ifndef FASTESTESET_HPP
+#define FASTESTESET_HPP
 
 #include <stdexcept>
 #include <utility>
-
+namespace RBTree {
 template <class Key, class Compare = std::less<Key>>
 class ESet {
    public:
@@ -127,11 +127,12 @@ class ESet {
         root->is_red = false;
     }
     void fix_erase(Node* node) {
-        if(node == nullptr) return;
+        if (node == nullptr) return;
         while (node != root && !node->is_red) {
             Node* parent = node->parent;
-            Node* sibling = (node == parent->left) ? parent->right : parent->left;
-    
+            Node* sibling =
+                (node == parent->left) ? parent->right : parent->left;
+
             if (sibling->is_red) {
                 // Case 1: 兄弟节点为红色
                 sibling->is_red = false;
@@ -142,7 +143,7 @@ class ESet {
                     LL(parent);
                 sibling = (node == parent->left) ? parent->right : parent->left;
             }
-    
+
             if ((!sibling->left || !sibling->left->is_red) &&
                 (!sibling->right || !sibling->right->is_red)) {
                 // Case 2: 兄弟节点为黑色且兄弟节点的子节点为黑色
@@ -151,20 +152,22 @@ class ESet {
             } else {
                 if (node == parent->left &&
                     (!sibling->right || !sibling->right->is_red)) {
-                    // Case 3: 兄弟节点为黑色，兄弟节点的左子节点为红色，右子节点为黑色
+                    // Case 3:
+                    // 兄弟节点为黑色，兄弟节点的左子节点为红色，右子节点为黑色
                     sibling->left->is_red = false;
                     sibling->is_red = true;
                     LL(sibling);
                     sibling = parent->right;
                 } else if (node == parent->right &&
                            (!sibling->left || !sibling->left->is_red)) {
-                    // Case 3: 兄弟节点为黑色，兄弟节点的右子节点为红色，左子节点为黑色
+                    // Case 3:
+                    // 兄弟节点为黑色，兄弟节点的右子节点为红色，左子节点为黑色
                     sibling->right->is_red = false;
                     sibling->is_red = true;
                     RR(sibling);
                     sibling = parent->left;
                 }
-    
+
                 // Case 4: 兄弟节点为黑色，兄弟节点的右子节点为红色
                 sibling->is_red = parent->is_red;
                 parent->is_red = false;
@@ -180,7 +183,7 @@ class ESet {
         }
         node->is_red = false;
     }
-    
+
     // 查找最小节点
     Node* find_min(Node* node) const {
         if (!node) return nullptr;
@@ -388,13 +391,13 @@ class ESet {
         }
     }
     void swapNodes(Node*& a, Node*& b) {
-        if (a == b) return; 
-    
+        if (a == b) return;
+
         Node* bParent = b->parent;
         Node* bLeft = b->left;
         Node* bRight = b->right;
         bool isBLeftChild = (bParent && bParent->left == b);
-    
+
         if (a->parent == nullptr) {
             root = b;
         } else if (a->parent->left == a) {
@@ -408,7 +411,7 @@ class ESet {
         if (a->left) a->left->parent = b;
         if (a->right) a->right->parent = b;
         b->is_red = a->is_red;
-    
+
         // 将 a 替换为 b
         a->left = bLeft;
         a->right = bRight;
@@ -421,48 +424,48 @@ class ESet {
         }
         a->parent = bParent;
     }
-    
+
     size_t erase(const Key& key) {
-        Node* node = find_node(key); 
-        if (!node) return 0; 
-    
-        Node* y = node; // y 是要删除的节点或其后继节点
-        Node* x = nullptr; // x 是 y 的子节点
-        bool y_original_color = y->is_red; 
-    
-        if (!node->left) { 
+        Node* node = find_node(key);
+        if (!node) return 0;
+
+        Node* y = node;     // y 是要删除的节点或其后继节点
+        Node* x = nullptr;  // x 是 y 的子节点
+        bool y_original_color = y->is_red;
+
+        if (!node->left) {
             x = node->right;
-            transplant(node, node->right); 
-        } else if (!node->right) { 
+            transplant(node, node->right);
+        } else if (!node->right) {
             x = node->left;
             transplant(node, node->left);
-        } else { 
-            y = find_min(node->right); 
-            y_original_color = y->is_red; 
-            x = y->right; 
-    
-            if (y->parent != node) { 
-                transplant(y, y->right); 
-                y->right = node->right; 
-                y->right->parent = y; 
+        } else {
+            y = find_min(node->right);
+            y_original_color = y->is_red;
+            x = y->right;
+
+            if (y->parent != node) {
+                transplant(y, y->right);
+                y->right = node->right;
+                y->right->parent = y;
             }
-    
-            transplant(node, y); 
-            y->left = node->left; 
-            y->left->parent = y; 
+
+            transplant(node, y);
+            y->left = node->left;
+            y->left->parent = y;
             y->is_red = node->is_red;
         }
-    
-        delete node; 
-        num_elements--; 
-    
-        if (!y_original_color) { 
-            fix_erase(x); 
+
+        delete node;
+        num_elements--;
+
+        if (!y_original_color) {
+            fix_erase(x);
         }
-    
-        return 1; 
+
+        return 1;
     }
-    
+
     iterator find(const Key& key) const {
         Node* node = find_node(key);
         return iterator(node, this);
@@ -546,5 +549,5 @@ class ESet {
         return it;
     }
 };
-
-#endif  // ESET_HPP
+}  // namespace RBTree
+#endif
