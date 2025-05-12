@@ -1,10 +1,12 @@
 # Report for ESet's performance tuning
-* by starrywiki in Johnclass project4
+* by starrywiki for Johnclass project4
 ## 数据结构采用：AVL & RBTree & std::set & 无旋treap
 ### Experiment process
-使用cmp.cpp对AVL & RBTree & std::set进行性能测试
-使用fhqtreap_test_task2对无旋treap进行性能测试
-测试数目如下
+
+#### 使用cmp.cpp对AVL & RBTree & std::set进行性能测试
+#### 使用fhqtreap_test_task2对无旋treap进行性能测试
+
+#### 测试数目如下
 * insert：3'000'000
 * erase: 500'000
 * find: 1'000'000
