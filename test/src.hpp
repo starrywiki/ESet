@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <utility>
+using ll = long long;
+
 template <class Key, class Compare = std::less<Key>>
 class ESet {
    public:
@@ -29,7 +31,7 @@ class ESet {
     size_t num_elements;  // 元素个数
 
     // 外侧靠左
-    void LL(Node* pnode) {
+    void RR(Node* pnode) {
         Node* subL = pnode->left;
         Node* subLR = subL->right;
         Node* ppnode = pnode->parent;
@@ -57,8 +59,8 @@ class ESet {
         // print_siz(root);
     }
 
-    // 右旋
-    void RR(Node* pnode) {
+    // 外侧靠右
+    void LL(Node* pnode) {
         Node* subR = pnode->right;
         Node* subRL = subR->left;
         Node* ppnode = pnode->parent;
@@ -85,14 +87,7 @@ class ESet {
         }
         // print_siz(root);
     }
-    void LR(Node* pnode) {
-        RR(pnode->left);
-        LL(pnode);
-    }
-    void RL(Node* pnode) {
-        LL(pnode->right);
-        RR(pnode);
-    }
+   
     // 插入修复
     void fix_insert(Node* cur) {
         while (cur != root && cur->parent->is_red) {
@@ -102,36 +97,42 @@ class ESet {
             if (gpnode->left == pnode) {
                 Node* uncle = gpnode->right;
                 if (uncle && uncle->is_red) {
+                    // Case 1: 叔叔节点为红色 
                     pnode->is_red = false;
                     uncle->is_red = false;
                     gpnode->is_red = true;
                     cur = gpnode;
                 } else {
                     if (pnode->right == cur) {
-                        RR(pnode);
+                        // Case 2: 当前节点是右子节点，先左旋
+                        LL(pnode);
                         cur = pnode;
                         pnode = cur->parent;
                     }
+                    // Case 3: 当前节点是左子节点，右旋并变色
                     pnode->is_red = false;
                     gpnode->is_red = true;
-                    LL(gpnode);
+                    RR(gpnode);
                 }
             } else {
                 Node* uncle = gpnode->left;
                 if (uncle && uncle->is_red) {
+                     // Case 1: 叔叔节点为红色
                     pnode->is_red = false;
                     uncle->is_red = false;
                     gpnode->is_red = true;
                     cur = gpnode;
                 } else {
                     if (pnode->left == cur) {
-                        LL(pnode);
+                     // Case 2: 当前节点是左子节点，先右旋
+                        RR(pnode);
                         cur = pnode;
                         pnode = cur->parent;
                     }
+                    // Case 3: 当前节点是右子节点，左旋并变色
                     pnode->is_red = false;
                     gpnode->is_red = true;
-                    RR(gpnode);
+                    LL(gpnode);
                 }
             }
         }
@@ -149,9 +150,9 @@ class ESet {
                 sibling->is_red = false;
                 parent->is_red = true;
                 if (node == parent->left)
-                    RR(parent);
-                else
                     LL(parent);
+                else
+                    RR(parent);
                 sibling = (node == parent->left) ? parent->right : parent->left;
             }
 
@@ -167,7 +168,7 @@ class ESet {
                     // 兄弟节点为黑色，兄弟节点的左子节点为红色，右子节点为黑色
                     sibling->left->is_red = false;
                     sibling->is_red = true;
-                    LL(sibling);
+                    RR(sibling);
                     sibling = parent->right;
                 } else if (node == parent->right &&
                            (!sibling->left || !sibling->left->is_red)) {
@@ -175,7 +176,7 @@ class ESet {
                     // 兄弟节点为黑色，兄弟节点的右子节点为红色，左子节点为黑色
                     sibling->right->is_red = false;
                     sibling->is_red = true;
-                    RR(sibling);
+                    LL(sibling);
                     sibling = parent->left;
                 }
 
@@ -184,10 +185,10 @@ class ESet {
                 parent->is_red = false;
                 if (node == parent->left) {
                     sibling->right->is_red = false;
-                    RR(parent);
+                    LL(parent);
                 } else {
                     sibling->left->is_red = false;
-                    LL(parent);
+                    RR(parent);
                 }
                 node = root;
             }
@@ -317,7 +318,7 @@ class ESet {
 
     ESet() : root(nullptr), num_elements(0) {}
     ~ESet() { clear(); }
-
+    // 插入元素
     template <class... Args>
     std::pair<iterator, bool> emplace(Args&&... args) {
         Key key(std::forward<Args>(args)...);
@@ -343,6 +344,7 @@ class ESet {
                 return {iterator(current, this), false};
             }
         }
+
         Node* tmp = pa;
         while (tmp) {
             tmp->siz++;
@@ -360,6 +362,7 @@ class ESet {
         return {iterator(new_node, this), true};
         // print_siz(root);
     }
+    // 节点替换操作
     void transplant(Node* u, Node* v) {
         if (u->parent == nullptr) {
             root = v;
@@ -383,7 +386,7 @@ class ESet {
         bool y_original_color = y->is_red;
 
         if (!node->left) {
-            // std::cout<<"enter11?"<<std::endl;
+            // Case 1: 节点没有左子节点
             Node* cur = node->parent;
             while (cur) {
                 cur->siz--;
@@ -392,7 +395,7 @@ class ESet {
             x = node->right;
             transplant(node, node->right);
         } else if (!node->right) {
-            // std::cout<<"enter22?"<<std::endl;
+            // Case 2: 节点没有右子节点
             Node* cur = node->parent;
             while (cur) {
                 cur->siz--;
@@ -401,7 +404,7 @@ class ESet {
             x = node->left;
             transplant(node, node->left);
         } else {
-            // std::cout<<"enter?"<<std::endl;
+            // Case 3: 节点有两个子节点
             y = find_min(node->right);
             y_original_color = y->is_red;
             x = y->right;
@@ -506,7 +509,7 @@ class ESet {
     iterator begin() const { return iterator(find_min(root), this); }
     iterator end() const { return iterator(nullptr, this); }
 
-    // 下界和上界查询
+    // 下界查询
     iterator lower_bound(const Key& key) const {
         Node* cur = root;
         Node* result = nullptr;
@@ -520,7 +523,7 @@ class ESet {
         }
         return iterator(result, this);
     }
-
+    // 上界查询
     iterator upper_bound(const Key& key) const {
         iterator it = lower_bound(key);
         if (it != end() && *it == key) {
