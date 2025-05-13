@@ -1,3 +1,4 @@
+// test for Task2 
 #include <ctime>
 #include <iostream>
 #include <set>
@@ -42,14 +43,14 @@ int main() {
         s.insert(a);
     }
     clock_t end = clock();
-    s_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    s_time0 = static_cast<double>(end - start);
     start = clock();
     for (int i = 0; i < cnt0; i++) {
         a = rand() % 3000000;
         rbt.emplace(a);
     }
     end = clock();
-    rbt_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    rbt_time0 = static_cast<double>(end - start);
 
     start = clock();
     for (int i = 0; i < cnt0; i++) {
@@ -57,7 +58,7 @@ int main() {
         avl.emplace(a);
     }
     end = clock();
-    avl_time0 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    avl_time0 = static_cast<double>(end - start);
 
      
     // test erase
@@ -68,7 +69,7 @@ int main() {
         s.erase(a);
     }
     end = clock();
-    s_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    s_time1 = static_cast<double>(end - start);
 
     start = clock();
     for (int i = 0; i < cnt1; i++) {
@@ -76,7 +77,7 @@ int main() {
         rbt.erase(a);
     }
     end = clock();
-    rbt_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    rbt_time1 = static_cast<double>(end - start);
 
     start = clock();
     for (int i = 0; i < cnt1; i++) {
@@ -84,7 +85,7 @@ int main() {
         avl.erase(a);
     }
     end = clock();
-    avl_time1 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    avl_time1 = static_cast<double>(end - start);
 
     // test find
     start = clock();
@@ -94,21 +95,21 @@ int main() {
         s.find(a);
     }
     end = clock();
-    s_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    s_time2 =static_cast<double>(end - start);
     start = clock();    
     for (int i = 0; i < cnt2; i++) {
         a = rand() % 3000000;
         rbt.find(a);
     }
     end = clock();
-    rbt_time2 = static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    rbt_time2 = static_cast<double>(end - start);
     start = clock();
     for (int i = 0; i < cnt2; i++) {
         a = rand() % 3000000;
         avl.find(a);
     }
     end = clock();
-    avl_time2 =static_cast<double>(end - start)/CLOCKS_PER_SEC;
+    avl_time2 =static_cast<double>(end - start);
     
     // test copy
     start = clock();
